@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { addToCartAsync, selectItems } from "../../cart/cartSlice";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { discountedPrice } from "../../../app/constants";
-
+import { useAlert } from "react-alert";
 // TODO: In server data we will add colors, sizes , highlights. to each product
 
 const colors = [
@@ -40,6 +40,7 @@ function classNames(...classes) {
 // TODO : Loading UI
 
 export default function ProductDetail() {
+  const alert = useAlert();
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const user = useSelector(selectLoggedInUser);
@@ -59,8 +60,11 @@ export default function ProductDetail() {
       };
       delete newItem["id"];
       dispatch(addToCartAsync(newItem));
+      // TODO: it will be based on server response of backend
+      alert.success("Added to cart");
     } else {
-      console.log("already in cart");
+      alert.error("already in cart");
+      // console.log("already in cart");
     }
   };
 
