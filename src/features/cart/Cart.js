@@ -1,39 +1,14 @@
-import React, { useState, Fragment } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteItemFromCartAsync,
   selectItems,
   updateCartAsync,
-} from "./cartSlice";
-import { Link } from "react-router-dom";
-
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
+} from './cartSlice';
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -47,16 +22,17 @@ export default function Cart() {
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
 
   const handleQuantity = (e, item) => {
-    // console.log(e.target.value);
     dispatch(updateCartAsync({ ...item, quantity: +e.target.value }));
-    // const dispatch
   };
 
-  const handleRemove = (e, id) => {
-    dispatch(deleteItemFromCartAsync(id));
-  };
+  const handleRemove =(e, id)=>{
+    dispatch(deleteItemFromCartAsync(id))
+  }
+
   return (
     <>
+      {!items.length && <Navigate to='/' replace={true}></Navigate>}
+
       <div>
         <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -95,10 +71,7 @@ export default function Cart() {
                           >
                             Qty
                           </label>
-                          <select
-                            onChange={(e) => handleQuantity(e, item)}
-                            value={item.quantity}
-                          >
+                          <select onChange={(e) => handleQuantity(e, item)} value={item.quantity}>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -109,7 +82,7 @@ export default function Cart() {
 
                         <div className="flex">
                           <button
-                            onClick={(e)=>handleRemove(e, item.id)}
+                            onClick={e=>handleRemove(e,item.id)}
                             type="button"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                           >

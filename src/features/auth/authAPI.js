@@ -30,3 +30,4 @@ export function checkUser(loginInfo) {
     // TODO: on server it will only return some info of user (not password)
   });
 }
+
